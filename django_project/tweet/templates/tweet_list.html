@@ -1,29 +1,84 @@
 {% extends "layout.html" %}
-{% block title %}
-Tweet Page
-{% endblock %}
-
+{% block title %}Tweet Feed{% endblock %}
 {% block content %}
-<h1 class="text-center mt-4">Welcome to our Tweet Website</h1>
-<a class="btn btn-primary mb-3" href="{% url 'tweet_create' %}">Create your Tweet</a>
 
-<div class="container row gap-3">
+<h1 class="text-center mb-5 fw-bold text-info fade-in">✨ Explore the Latest Tweets</h1>
+
+<div class="text-center mb-4 fade-in">
+  <a class="btn btn-gradient px-4 py-2 fw-semibold shadow-sm" href="{% url 'tweet_create' %}">
+    <i class="bi bi-plus-circle"></i> Create New Tweet
+  </a>
+</div>
+
+<div class="row g-4 justify-content-center">
   {% for tweet in tweets %}
-  <div class="card" style="width: 18rem;">
-    {% if tweet.photo %}
-      <img src="{{ tweet.photo.url }}" class="card-img-top" alt="image">
-    {% else %}
-      <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No image">
-    {% endif %}
-    <div class="card-body">
-      <h5 class="card-title">{{ tweet.user.username }}</h5>
-      <p class="card-text">{{ tweet.text }}</p>
-      {% if tweet.user == user  %}
-      <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
-      <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+  <div class="col-md-4 fade-in">
+    <div class="glass-card overflow-hidden shadow-lg rounded-4 p-3 hover-up" style="transition: all 0.3s ease;">
+      {% if tweet.photo %}
+        <img src="{{ tweet.photo.url }}" class="card-img-top rounded-3 mb-3" alt="tweet image">
+      {% else %}
+        <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top rounded-3 mb-3" alt="no image">
       {% endif %}
+
+      <div class="card-body text-center">
+        <h5 class="card-title text-info mb-2">@{{ tweet.user.username }}</h5>
+        <p class="card-text mb-4">{{ tweet.text }}</p>
+
+        {% if tweet.user == user %}
+        <div class="d-flex justify-content-center gap-3">
+          <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-warning px-4 py-2 fw-semibold shadow-sm">Edit</a>
+          <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger px-4 py-2 fw-semibold shadow-sm">Delete</a>
+        </div>
+        {% endif %}
+      </div>
     </div>
   </div>
+  {% empty %}
+  <p class="text-center text-muted">No tweets yet. Be the first to post!</p>
   {% endfor %}
 </div>
-{% endblock content %}
+
+<style>
+/* Smooth fade-in animation */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out forwards;
+  opacity: 0;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+}
+
+/* Hover lift effect */
+.hover-up:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient primary button */
+.btn-gradient {
+  background: linear-gradient(45deg, #00b4d8, #0077b6);
+  color: white !important;
+  border: none;
+  transition: all 0.3s ease;
+}
+.btn-gradient:hover {
+  background: linear-gradient(45deg, #0096c7, #023e8a);
+  transform: scale(1.05);
+}
+
+/* Smooth button hover effects */
+.btn-warning:hover, .btn-danger:hover {
+  transform: scale(1.05);
+}
+</style>
+
+{% endblock %}

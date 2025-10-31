@@ -1,13 +1,11 @@
- {% extends "layout.html" %}
-{% block title %}
-Tweet Page
-{% endblock %}
-
+{% extends "layout.html" %}
+{% block title %}Logged Out{% endblock %}
 {% block content %}
-<h1 class="text-center mt-4">Logged Out</h1>
-<h2>You have been logged out</h2>
 
-<p>Login Again <a href="{% url 'login'%}">login here</a></p>
+<div class="glass-card mx-auto p-5 text-center fade-in" style="max-width: 500px;">
+  <h2 class="text-info mb-3"><i class="bi bi-check-circle"></i> You’ve been logged out</h2>
+  <p class="text-muted mb-4">We hope to see you again soon!</p>
+  <a href="{% url 'login' %}" class="btn btn-gradient px-4">Login Again</a>
+</div>
 
-
-{% endblock content %}
+{% endblock %}
